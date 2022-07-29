@@ -1,16 +1,22 @@
 import React from "react";
 import Header from "./Header"
 import Main from "./Main";
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import GlobalStyle from "./GlobalStyles";
-import "../assets/css/reset.css";
 
 function App() {
     return (
-        <>
-            <GlobalStyle/>
-            <Header/>
-            <Main/>
-        </>
+
+        <BrowserRouter>
+        
+            <GlobalStyle />
+            <Header />
+            <Routes>
+                <Route path="/" element={<Main />}/>
+            </Routes>
+
+        </BrowserRouter>
+
     )
 }
 

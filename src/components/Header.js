@@ -12,13 +12,14 @@ function Header() {
 
 const Head = styled.header`
     width: 100vw;
-    height: 34px;
+    height: 67px;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+    background: #C3CFD9;
 
     h1{
+        color: #E8833A;
         text-align: center;
         font-weight: 400;
         font-size: 34px;
