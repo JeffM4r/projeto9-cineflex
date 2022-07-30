@@ -27,24 +27,25 @@ function Main() {
 
         requisicao.then(resposta => {
             setMovies(resposta.data);
-            console.log(resposta.data)
         });
     }, []);
 
 
     return (
-        <Principal>
-            <h2>
-                Selecione o filme
-            </h2>
-            <Movies>
+        <>
+            <Principal>
+                <h2>
+                    Selecione o filme
+                </h2>
+                <Movies>
 
-                {movies.map(movie =>
-                    <Movie key={movie.id} posterURL={movie.posterURL} title={movie.title} moviesId={movie.id} />
-                )}
+                    {movies.map(movie =>
+                        <Movie key={movie.id} posterURL={movie.posterURL} title={movie.title} moviesId={movie.id} />
+                    )}
 
-            </Movies>
-        </Principal>
+                </Movies>
+            </Principal>
+        </>
     )
 }
 

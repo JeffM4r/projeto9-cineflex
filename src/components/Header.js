@@ -19,6 +19,7 @@ const Head = styled.header`
     background: #C3CFD9;
 
     h1{
+        font-family: 'Roboto', sans-serif;
         color: #E8833A;
         text-align: center;
         font-weight: 400;
