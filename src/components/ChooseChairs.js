@@ -4,7 +4,56 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Footer from './Footer';
 
+function Seat({ name, isAvailable, seatId, choosenSeats }) {
+    if (name.length === 1) {
+        name = '0' + name
+    }
+
+    const [color, setColor] = useState({})
+
+    function handleClick() {
+        if (!isAvailable) { return }
+        if ("#8DD7CF" === color.backgroundColor) {
+            setColor({ backgroundColor: "#C3CFD9", border: "1px solid #808F9D" })
+            const index = choosenSeats.indexOf(seatId);
+            if (index !== -1) {
+                choosenSeats.splice(index, 1);
+                console.log(choosenSeats)
+            }
+            return
+        }
+        setColor({ backgroundColor: "#8DD7CF", border: "1px solid #1AAE9E" })
+        choosenSeats.push(seatId)
+        console.log(choosenSeats)
+    }
+
+    return (
+        <Chair style={color} available={isAvailable} onClick={handleClick}>{name}</Chair>
+    )
+}
+
 function ChooseChairs() {
+
+    const params = useParams();
+    const [posterURL, setPosterURL] = useState();
+    const [title, setTitle] = useState();
+    const [seats, setSeats] = useState([])
+    const [hourday, setHourday] = useState();
+    let choosenSeats = []
+
+    useEffect(() => {
+        const requisicao = axios.get(
+            `https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${params.idsessao}/seats`
+        );
+
+        requisicao.then(resposta => {
+            setPosterURL(resposta.data.movie.posterURL)
+            setTitle(resposta.data.movie.title)
+            setHourday(`${resposta.data.day.weekday} - ${resposta.data.name}`)
+            setSeats(resposta.data.seats)
+            console.log(resposta.data)
+        });
+    }, []);
 
     return (
         <>
@@ -14,56 +63,7 @@ function ChooseChairs() {
                     Selecione o(s) assento(s)
                 </h2>
                 <Chairs>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>01</div>
-                    <div>48</div>
-                    <div>47</div>
-                    <div>48</div>
-                    <div>49</div>
-                    <div>50</div>
+                    {seats.map(seat => <Seat key={seat.id} name={seat.name} isAvailable={seat.isAvailable} seatId={seat.id} choosenSeats={choosenSeats} />)}
                 </Chairs>
                 <Subtitle>
                     <div>
@@ -90,7 +90,7 @@ function ChooseChairs() {
                 </Form>
 
             </SelectChairs>
-            <Footer />
+            <Footer posterURL={posterURL} title={title} hourday={hourday} />
         </>
     )
 }
@@ -98,7 +98,7 @@ function ChooseChairs() {
 const SelectChairs = styled.main`
 
 font-family: 'Roboto', sans-serif;
-margin-bottom: 137px;
+margin-bottom: 127px;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -119,22 +119,21 @@ const Chairs = styled.div`
 display: flex;
 flex-wrap: wrap;
 width: 340px;
-
-    div{
-        width: 26px;
-        height: 26px;
-        margin-bottom: 18px;
-        margin-left:3px;
-        margin-right:3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #C3CFD9;
-        border: 1px solid #808F9D;
-        border-radius: 50px;
-    }
-
 `
+const Chair = styled.div`
+width: 26px;
+height: 26px;
+margin-bottom: 18px;
+margin-left:3px;
+margin-right:3px;    
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50px;
+background-color: ${props => props.available ? "#C3CFD9" : "#FBE192"} ;
+border: ${props => props.available ? "1px solid #808F9D" : "1px solid #F7C52B"} ;
+`
+
 const Subtitle = styled.div`
 display: flex;
     div{
@@ -198,7 +197,7 @@ width: 327px;
     input{
         padding-left:10px;
         padding-right:10px;
-        width: 100%;
+        width: 307px;
         height: 51px;
         font-family: 'Roboto';  
         font-size: 18px;
