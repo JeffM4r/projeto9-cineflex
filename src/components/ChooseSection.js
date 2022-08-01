@@ -16,7 +16,7 @@ function Section({ weekday, showtimes, date}) {
     )
 }
 
-function ChooseSection() {
+function ChooseSection({setMovieName}) {
 
     const params = useParams();
     const [sections, setSections] = useState([]);
@@ -32,6 +32,7 @@ function ChooseSection() {
             setSections(resposta.data.days);
             setPosterURL(resposta.data.posterURL);
             setTitle(resposta.data.title);
+            setMovieName(resposta.data.title)
         });
     }, []);
 
@@ -97,6 +98,9 @@ font-size: 18px;
 font-weight: 400;
 margin-right: 8px;
 margin-bottom: 23px;
+&:hover{
+    cursor: pointer;
+}
 `
 
 export default ChooseSection;
