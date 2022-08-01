@@ -58,7 +58,7 @@ function ChooseChairs({ setNameLastScreen,setCpfLastScreen,setAssentos, assentos
             setPosterURL(resposta.data.movie.posterURL)
             setTitle(resposta.data.movie.title)
             setHourday(`${resposta.data.day.weekday} - ${resposta.data.name}`)
-            setMovieDate(`${resposta.data.day.weekday} ${resposta.data.name}`)
+            setMovieDate(`${resposta.data.day.date} ${resposta.data.name}`)
             setSeats(resposta.data.seats)
 
         });
